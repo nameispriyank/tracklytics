@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-
+import com.github.library_view.LibraryModule;
 import com.orhanobut.tracklytics.Attribute;
 import com.orhanobut.tracklytics.Event;
 import com.orhanobut.tracklytics.EventLogListener;
@@ -44,7 +44,12 @@ public class MainActivity extends Activity implements Trackable {
       @TrackEvent("button_click")
       @FixedAttribute(key = "button_name", value = "Login")
       @Override public void onClick(View v) {
-
+        onItemSelected(2);
+        String id = userId();
+        onLoggedIn(new User(id,"e@e.com"),id);
+        new KotlinObject().track();
+        new JavaObject().track();
+        new LibraryModule().track();
       }
     });
   }

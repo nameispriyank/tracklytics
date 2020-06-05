@@ -33,7 +33,7 @@ public class TrackingTest {
   }
 
   @Test public void confirmJavaAspects() {
-    new Foo().trackFoo();
+    new KotlinObject().track();
 
     assertThat(triggeredEvents).containsKey("event_java");
   }

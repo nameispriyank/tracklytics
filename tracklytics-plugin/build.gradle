@@ -6,9 +6,9 @@ dependencies {
   implementation localGroovy()
   implementation 'org.aspectj:aspectjtools:1.8.10'
   implementation 'org.aspectj:aspectjrt:1.8.10'
-  implementation 'com.android.tools.build:gradle:3.3.0'
+  implementation 'com.android.tools.build:gradle:4.0.0'
 
-  testImplementation 'junit:junit:4.12'
+  testImplementation 'junit:junit:4.13'
 }
 
 modifyPom {
