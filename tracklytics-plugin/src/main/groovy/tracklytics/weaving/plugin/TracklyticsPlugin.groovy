@@ -13,7 +13,7 @@ class TracklyticsPlugin implements Plugin<Project> {
 
         project.dependencies {
             implementation 'org.aspectj:aspectjrt:1.8.10'
-            implementation 'com.orhanobut.tracklytics:tracklytics-runtime:2.1.2'
+            implementation 'com.orhanobut.tracklytics:tracklytics-runtime:2.1.3'
             compileOnly "org.aspectj:aspectjrt:1.8.10"
         }
 
@@ -72,7 +72,7 @@ class TracklyticsPlugin implements Plugin<Project> {
         def destinationDir = javaCompile.destinationDir.toString()
         def classPath = javaCompile.classpath.asPath
         def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
-        String[] args = [
+        String[] javaArgs = [
                 "-showWeaveInfo",
                 "-1.7",
                 "-inpath", destinationDir,
@@ -81,7 +81,18 @@ class TracklyticsPlugin implements Plugin<Project> {
                 "-classpath", classPath,
                 "-bootclasspath", bootClassPath
         ]
-        new Main().run(args, new MessageHandler(true));
+        String[] kotlinArgs = ["-showWeaveInfo",
+                               "-1.8",
+                               "-inpath", project.buildDir.path + "/tmp/kotlin-classes/" + variantName.toLowerCase(),
+                               "-aspectpath", classPath,
+                               "-d", project.buildDir.path + "/tmp/kotlin-classes/" + variantName.toLowerCase(),
+                               "-classpath", classPath,
+                               "-bootclasspath", bootClassPath]
+
+        MessageHandler handler = new MessageHandler(true)
+        new Main().run(javaArgs, handler)
+        new Main().run(kotlinArgs, handler)
+
         println("----------------------------------------------")
         println("--------------Tracklytics Weave ($type)---------------")
         println("----------------------------------------------")

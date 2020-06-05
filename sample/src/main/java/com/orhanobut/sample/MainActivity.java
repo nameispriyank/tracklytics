@@ -4,7 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import com.github.library_view.LibraryModule;
+import com.github.library_view.LibraryModuleJavaObject;
+import com.github.library_view.LibraryModuleKotlinObject;
 import com.orhanobut.tracklytics.Attribute;
 import com.orhanobut.tracklytics.Event;
 import com.orhanobut.tracklytics.EventLogListener;
@@ -47,9 +48,10 @@ public class MainActivity extends Activity implements Trackable {
         onItemSelected(2);
         String id = userId();
         onLoggedIn(new User(id,"e@e.com"),id);
-        new KotlinObject().track();
         new JavaObject().track();
-        new LibraryModule().track();
+        new KotlinObject().track();
+        new LibraryModuleJavaObject().track();
+        new LibraryModuleKotlinObject().track();
       }
     });
   }

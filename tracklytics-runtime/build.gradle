@@ -49,7 +49,7 @@ android.libraryVariants.all { variant ->
         def destinationDir = javaCompile.destinationDir.toString()
         def classPath = javaCompile.classpath.asPath
         def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
-        String[] args = [
+        String[] javaArgs = [
                 "-showWeaveInfo",
                 "-1.7",
                 "-inpath", destinationDir,
@@ -59,10 +59,21 @@ android.libraryVariants.all { variant ->
                 "-bootclasspath", bootClassPath
         ]
 
-        new Main().run(args, new MessageHandler(true));
+        String[] kotlinArgs = ["-showWeaveInfo",
+                               "-1.8",
+                               "-inpath", project.buildDir.path + "/tmp/kotlin-classes/" + variant,
+                               "-aspectpath", classPath,
+                               "-d", project.buildDir.path + "/tmp/kotlin-classes/" + variant,
+                               "-classpath", classPath,
+                               "-bootclasspath", bootClassPath]
+
+        MessageHandler handler = new MessageHandler(true)
+        new Main().run(javaArgs, handler)
+        new Main().run(kotlinArgs, handler)
         println("----------------------------------------------")
         println("---------Tracklytics-runtime Weave------------")
         println("----------------------------------------------")
+        println("variant: $variant")
         println("destinationDir: $destinationDir")
         println("classPath: $classPath")
         println("bootClassPath: $bootClassPath")
