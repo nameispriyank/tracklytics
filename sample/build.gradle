@@ -1,56 +1,83 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'com.orhanobut.tracklytics'
 
 buildscript {
-  repositories {
-    mavenCentral()
-    mavenLocal()
-  }
-  dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
-    classpath 'com.orhanobut.tracklytics:tracklytics-plugin:2.1.3'
-  }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.72"
+        classpath 'com.orhanobut.tracklytics:tracklytics-plugin:2.1.9'
+    }
 }
 
 repositories {
 //  mavenCentral()
 
-  // NOTE: This is only needed when developing the plugin!
-  mavenLocal()
+    // NOTE: This is only needed when developing the plugin!
+    mavenLocal()
 }
 
 android {
-  compileSdkVersion 26
-  buildToolsVersion "28.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "28.0.3"
 
-  compileOptions {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
-  }
+    compileOptions {
+        compileSdkVersion rootProject.ext.compileSdkVersion
+        buildToolsVersion rootProject.ext.buildToolsVersion
+    }
 
-  defaultConfig {
-    applicationId "com.orhanobut.sample"
-    minSdkVersion 16
-    targetSdkVersion 26
-    versionCode 1
-    versionName "1.0"
-  }
+    defaultConfig {
+        applicationId "com.orhanobut.sample"
+        minSdkVersion 16
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
 
-  sourceSets {
-    test.java.srcDirs += 'src/test/kotlin'
+    sourceSets {
+        test.java.srcDirs += 'src/test/kotlin'
 
-    main.java.srcDirs += 'src/main/kotlin'
-  }
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            debuggable false
+        }
+        stage {
+            versionNameSuffix "-stage"
+        }
+        debug {
+            versionNameSuffix '-debug'
+            debuggable true
+            minifyEnabled false
+        }
+    }
+
+    flavorDimensions "develop"
+
+    productFlavors {
+        production {
+        }
+        payment {
+        }
+        label {
+        }
+        develop {
+        }
+    }
 }
 
 dependencies {
-  testImplementation 'junit:junit:4.13'
-  testImplementation 'com.google.truth:truth:0.28'
+    testImplementation 'junit:junit:4.13'
+    testImplementation 'com.google.truth:truth:0.28'
 
-  implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
-  implementation project(":library_module")
-
-
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.3.72"
+    implementation project(":library_module")
 }
+
+apply plugin: 'com.orhanobut.tracklytics'

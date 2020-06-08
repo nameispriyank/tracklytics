@@ -47,25 +47,26 @@ android.libraryVariants.all { variant ->
     }
     javaCompile.doLast {
         def destinationDir = javaCompile.destinationDir.toString()
-        def classPath = javaCompile.classpath.asPath
         def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
         String[] javaArgs = [
                 "-showWeaveInfo",
                 "-1.7",
                 "-inpath", destinationDir,
-                "-aspectpath", classPath,
+                "-aspectpath", javaCompile.classpath.asPath/*javaCompile.classpath.asFileTree.filter {!it.canonicalPath.contains("transforms")}.asPath*/,
                 "-d", destinationDir,
-                "-classpath", classPath,
+                "-classpath", javaCompile.classpath.asPath,
                 "-bootclasspath", bootClassPath
         ]
 
-        String[] kotlinArgs = ["-showWeaveInfo",
-                               "-1.8",
-                               "-inpath", project.buildDir.path + "/tmp/kotlin-classes/" + variant,
-                               "-aspectpath", classPath,
-                               "-d", project.buildDir.path + "/tmp/kotlin-classes/" + variant,
-                               "-classpath", classPath,
-                               "-bootclasspath", bootClassPath]
+        String[] kotlinArgs = [
+                "-showWeaveInfo",
+                "-1.8",
+                "-inpath", project.buildDir.path + "/tmp/kotlin-classes/" + variant,
+                "-aspectpath", javaCompile.classpath.asPath/*javaCompile.classpath.asFileTree.filter {!it.canonicalPath.contains("transforms")}.asPath*/,
+                "-d", project.buildDir.path + "/tmp/kotlin-classes/" + variant,
+                "-classpath", javaCompile.classpath.asPath,
+                "-bootclasspath", bootClassPath
+        ]
 
         MessageHandler handler = new MessageHandler(true)
         new Main().run(javaArgs, handler)
@@ -75,8 +76,10 @@ android.libraryVariants.all { variant ->
         println("----------------------------------------------")
         println("variant: $variant")
         println("destinationDir: $destinationDir")
-        println("classPath: $classPath")
+        println("classPath: ${javaCompile.classpath.asPath}")
         println("bootClassPath: $bootClassPath")
+        println("javaArgs: $javaArgs")
+        println("kotlinArgs: $kotlinArgs")
         println("----------------------------------------------")
     }
 }

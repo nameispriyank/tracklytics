@@ -15,12 +15,17 @@ Add the following code block to in your app/build.gradle.
 ```groovy
 buildscript {
   dependencies {
-    classpath 'com.orhanobut.tracklytics:tracklytics-plugin:2.1.0'
+    classpath 'com.orhanobut.tracklytics:tracklytics-plugin:2.1.9'
   }
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'com.orhanobut.tracklytics'   // Must be added after com.android.application
+
+android {
+...
+}
+
+apply plugin: 'com.orhanobut.tracklytics'   // Must be added at end of file
 
 ```
 
