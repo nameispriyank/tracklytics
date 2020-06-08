@@ -15,7 +15,7 @@ Add the following code block to in your app/build.gradle.
 ```groovy
 buildscript {
   dependencies {
-    classpath 'com.orhanobut.tracklytics:tracklytics-plugin:2.1.9'
+    classpath 'com.orhanobut.tracklytics:tracklytics-plugin:2.2.1'
   }
 }
 

@@ -18,7 +18,7 @@ class TracklyticsPlugin implements Plugin<Project> {
             println("-----------add dependencies------------------------")
 
             implementation 'org.aspectj:aspectjrt:1.8.10'
-            implementation 'com.orhanobut.tracklytics:tracklytics-runtime:2.1.3'
+            implementation 'com.orhanobut.tracklytics:tracklytics-runtime:2.2.1'
             compileOnly "org.aspectj:aspectjrt:1.8.10"
         }
 
@@ -123,22 +123,26 @@ class TracklyticsPlugin implements Plugin<Project> {
     private static void runWithArgs(JavaCompile javaCompile, Project project, dirName, type) {
         def destinationDir = javaCompile.destinationDir.toString()
         def bootClassPath = project.android.bootClasspath.join(File.pathSeparator)
+        def classPath = javaCompile.classpath.asPath
+        def aspectPath = javaCompile.classpath.asFileTree.filter {
+            it.canonicalPath.contains("tracklytics-runtime")
+        }.asPath
         String[] javaArgs = [
                 "-showWeaveInfo",
                 "-1.7",
                 "-inpath", destinationDir,
-                "-aspectpath", javaCompile.classpath.asPath/*javaCompile.classpath.asFileTree.filter { !it.canonicalPath.contains("transforms") }.asPath*/,
+                "-aspectpath", aspectPath,
                 "-d", destinationDir,
-                "-classpath", javaCompile.classpath.asPath,
+                "-classpath", classPath,
                 "-bootclasspath", bootClassPath
         ]
         String[] kotlinArgs = [
                 "-showWeaveInfo",
                 "-1.8",
                 "-inpath", project.buildDir.path + "/tmp/kotlin-classes/" + dirName,
-                "-aspectpath", javaCompile.classpath.asPath/*javaCompile.classpath.asFileTree.filter { !it.canonicalPath.contains("transforms") }.asPath*/,
+                "-aspectpath", aspectPath,
                 "-d", project.buildDir.path + "/tmp/kotlin-classes/" + dirName,
-                "-classpath", javaCompile.classpath.asPath,
+                "-classpath", classPath,
                 "-bootclasspath", bootClassPath
         ]
 
@@ -151,7 +155,8 @@ class TracklyticsPlugin implements Plugin<Project> {
         println("----------------------------------------------")
         println("dirName: $dirName")
         println("destinationDir: $destinationDir")
-        println("classPath: ${javaCompile.classpath.asPath}")
+        println("classPath: $classPath")
+        println "aspectpath: $aspectPath"
         println("bootClassPath: $bootClassPath")
         println("javaArgs: $javaArgs")
         println("kotlinArgs: $kotlinArgs")
