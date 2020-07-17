@@ -254,6 +254,21 @@ Use [Bee](https://github.com/orhanobut/bee) to monitor your events
 ### How it works
 <img src='https://github.com/orhanobut/tracklytics/blob/master/art/how_it_works.png'/>
 
+### ProGuard
+
+Depending on your ProGuard (DexGuard) config and usage, you may need to include the following lines in your proguard
+```
+-keep class com.orhanobut.tracklytics.** { *; }
+-keepclassmembers class com.orhanobut.tracklytics.** {
+    *;
+}
+-keep interface com.orhanobut.tracklytics.** { *; }
+-keep @interface com.orhanobut.tracklytics.** { *; }
+-keep enum com.orhanobut.tracklytics.** { *; }
+-keepattributes Attribute, FixedAttribute, FixedAttributes, RemoveSuperAttribute, TrackableAttribute, TrackEvent, TrackSuperAttribute, TransformAttribute, TransformAttributeMap
+
+```
+
 ### Licence
 <pre>
 Copyright 2017 Orhan Obut
