@@ -259,13 +259,18 @@ Use [Bee](https://github.com/orhanobut/bee) to monitor your events
 Depending on your ProGuard (DexGuard) config and usage, you may need to include the following lines in your proguard
 ```
 -keep class com.orhanobut.tracklytics.** { *; }
--keepclassmembers class com.orhanobut.tracklytics.** {
-    *;
-}
+-keepclassmembers class com.orhanobut.tracklytics.** { *; }
 -keep interface com.orhanobut.tracklytics.** { *; }
 -keep @interface com.orhanobut.tracklytics.** { *; }
 -keep enum com.orhanobut.tracklytics.** { *; }
--keepattributes Attribute, FixedAttribute, FixedAttributes, RemoveSuperAttribute, TrackableAttribute, TrackEvent, TrackSuperAttribute, TransformAttribute, TransformAttributeMap
+-keepattributes Attribute,FixedAttribute,FixedAttributes,RemoveSuperAttribute,TrackableAttribute,TrackEvent,TrackSuperAttribute,TransformAttribute,TransformAttributeMap
+-keepattributes *Annotation*
+
+-keepclasseswithmembers class * {
+@com.orhanobut.tracklytics.TrackEvent *;
+}
+
+-dontwarn com.orhanobut.tracklytics.*
 
 ```
 
