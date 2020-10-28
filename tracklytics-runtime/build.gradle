@@ -11,7 +11,6 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -19,7 +18,10 @@ android {
 
     defaultConfig {
         minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion 26
         consumerProguardFiles 'consumer-proguard-rules.pro'
+        versionCode 1
+        versionName "2.2.1.1"
     }
 
     lintOptions {
@@ -83,5 +85,3 @@ android.libraryVariants.all { variant ->
         println("----------------------------------------------")
     }
 }
-
-apply from: rootProject.file('gradle/maven_push.gradle')
